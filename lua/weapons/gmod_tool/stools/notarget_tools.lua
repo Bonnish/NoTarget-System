@@ -10,7 +10,7 @@ local function ToggleNoTarget(ent)
     ent:SetNoTarget(nuevoEstado)
 
     local modo = nuevoEstado and "ACTIVADO" or "DESACTIVADO"
-    ent:ChatPrint("No Target ahora esta: " .. modo .. " para: " .. ent:Nick())
+    ent:ChatPrint("No Target is now: " .. modo .. " for: " .. ent:Nick())
 end
 
 function TOOL:LeftClick(trace)
