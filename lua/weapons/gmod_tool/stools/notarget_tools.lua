@@ -20,8 +20,25 @@ local function ToggleNoTarget(ent)
     ent:ChatPrint("No Target is now " .. modo .. " for " .. ent:Nick())
 end
 
+local function GetConfig()
+    if not BonnishBase or not BonnishBase.GetConfig then
+        return { allow_self = true, allow_others = false }
+    end
+    local cfg = BonnishBase.GetConfig("no_target") or {}
+    if cfg.allow_self == nil then cfg.allow_self = true end
+    if cfg.allow_others == nil then cfg.allow_others = false end
+    return cfg
+end
+
 function TOOL:LeftClick(trace)
     if CLIENT then return true end
+
+    local ply = self:GetOwner()
+    local config = GetConfig()
+    if not config.allow_others and not ply:IsSuperAdmin() then
+        ply:ChatPrint("No tienes permiso para dar No Target a otros.")
+        return false
+    end
 
     local ent = trace.Entity
     if IsValid(ent) and ent:IsPlayer() then
@@ -34,6 +51,12 @@ function TOOL:RightClick(trace)
     if CLIENT then return true end
 
     local ply = self:GetOwner()
+    local config = GetConfig()
+    if not config.allow_self and not ply:IsSuperAdmin() then
+        ply:ChatPrint("No tienes permiso para ponerte No Target.")
+        return false
+    end
+
     ToggleNoTarget(ply)
     return true 
 end
