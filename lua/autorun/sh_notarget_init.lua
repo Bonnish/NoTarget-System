@@ -5,7 +5,7 @@ if BonnishBase and BonnishBase.RegisterAddon then
         version = "1.0",
         workshop = "https://github.com/Bonnish/NoTarget-System",
         settings = {
-            { type = "string_list", id = "allowed_jobs", name = "Jobs con No Target (Solo DarkRP)", requireGamemode = "darkrp" },
+            { type = "job_list", id = "allowed_jobs", name = "Jobs con No Target (Solo DarkRP)", requireGamemode = "darkrp" },
             { type = "boolean", id = "allow_self", name = "Permitir ponerse No Target a sí mismo", default = true },
             { type = "boolean", id = "allow_others", name = "Permitir dar No Target a otros", default = false },
             { type = "string", id = "command", name = "Comando de chat", default = "!notarget" }

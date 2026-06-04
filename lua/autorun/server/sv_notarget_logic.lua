@@ -41,11 +41,20 @@ local function CheckJobNoTarget(ply, jobTeam)
     local config = GetConfig()
     local allowedJobs = config.allowed_jobs or {}
 
+    local plyJob = RPExtraTeams[jobTeam]
     local plyJobName = team.GetName(jobTeam)
+    local plyCatName = plyJob and plyJob.category or ""
 
     local shouldHaveNoTarget = false
     for _, job in ipairs(allowedJobs) do
-        if string.lower(job) == string.lower(plyJobName) then
+        local j_clean = string.lower(string.Trim(job))
+        local target_job = string.lower(string.Trim(plyJobName))
+        local target_cat = string.lower(string.Trim("[CAT] " .. plyCatName))
+        
+        if j_clean == target_job then
+            shouldHaveNoTarget = true
+            break
+        elseif j_clean == target_cat then
             shouldHaveNoTarget = true
             break
         end
