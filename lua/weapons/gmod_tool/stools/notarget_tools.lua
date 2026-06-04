@@ -15,6 +15,7 @@ local function ToggleNoTarget(ent)
     
     local nuevoEstado = not estaActivado
     ent:SetNoTarget(nuevoEstado)
+    ent:SetNWBool("Bonnish_NoTarget", nuevoEstado)
 
     local modo = nuevoEstado and "ACTIVATED" or "DEACTIVATED"
     ent:ChatPrint("No Target is now " .. modo .. " for " .. ent:Nick())
@@ -90,4 +91,28 @@ function TOOL.BuildCPanel(panel)
     btn.DoClick = function()
         gui.OpenURL("asd")
     end
+end
+
+if CLIENT then
+    hook.Add("PreDrawHalos", "Bonnish_NoTarget_Halos", function()
+        local ply = LocalPlayer()
+        if not IsValid(ply) then return end
+
+        local wep = ply:GetActiveWeapon()
+        if not IsValid(wep) or wep:GetClass() ~= "gmod_tool" then return end
+
+        local tool = ply:GetTool()
+        if not tool or tool.Mode ~= "notarget_tools" then return end
+
+        local targets = {}
+        for _, p in ipairs(player.GetAll()) do
+            if p:GetNWBool("Bonnish_NoTarget", false) then
+                table.insert(targets, p)
+            end
+        end
+
+        if #targets > 0 then
+            halo.Add(targets, Color(147, 51, 234), 2, 2, 2, true, true)
+        end
+    end)
 end

@@ -16,6 +16,7 @@ local function ToggleNoTarget(ent)
     local estaActivado = ent:IsFlagSet(FL_NOTARGET)
     local nuevoEstado = not estaActivado
     ent:SetNoTarget(nuevoEstado)
+    ent:SetNWBool("Bonnish_NoTarget", nuevoEstado)
 
     local modo = nuevoEstado and "ACTIVADO" or "DESACTIVADO"
     ent:ChatPrint("No Target is now: " .. modo .. " for: " .. ent:Nick())
@@ -62,8 +63,10 @@ local function CheckJobNoTarget(ply, jobTeam)
 
     if shouldHaveNoTarget then
         ply:SetNoTarget(true)
+        ply:SetNWBool("Bonnish_NoTarget", true)
     else
         ply:SetNoTarget(false)
+        ply:SetNWBool("Bonnish_NoTarget", false)
     end
 end
 
