@@ -8,17 +8,32 @@ if CLIENT then
     language.Add("tool.notarget_tools.right", "Toggle NoTarget on yourself")
 end
 
-local function ToggleNoTarget(ent)
+local function Notify(ply, msg, msgType)
+    if DarkRP and DarkRP.notify then
+        DarkRP.notify(ply, msgType or 0, 4, msg)
+    else
+        ply:ChatPrint("[No Target] " .. msg)
+    end
+end
+
+local function ToggleNoTarget(ent, activator)
     if not IsValid(ent) or not ent:IsPlayer() then return end
 
     local estaActivado = ent:IsFlagSet(FL_NOTARGET)
-    
     local nuevoEstado = not estaActivado
     ent:SetNoTarget(nuevoEstado)
     ent:SetNWBool("Bonnish_NoTarget", nuevoEstado)
 
-    local modo = nuevoEstado and "ACTIVATED" or "DEACTIVATED"
-    ent:ChatPrint("No Target is now " .. modo .. " for " .. ent:Nick())
+    local msg
+    if nuevoEstado then
+        msg = (BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_enabled") or "No Target is now: ENABLED for: ") .. ent:Nick()
+        Notify(ent, msg, 0)
+        if activator and activator ~= ent then Notify(activator, msg, 0) end
+    else
+        msg = (BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_disabled") or "No Target is now: DISABLED for: ") .. ent:Nick()
+        Notify(ent, msg, 1)
+        if activator and activator ~= ent then Notify(activator, msg, 1) end
+    end
 end
 
 local function GetConfig()
@@ -36,14 +51,15 @@ function TOOL:LeftClick(trace)
 
     local ply = self:GetOwner()
     local config = GetConfig()
-    if not config.allow_others and not ply:IsSuperAdmin() then
-        ply:ChatPrint("No tienes permiso para dar No Target a otros.")
+    if not config.allow_others and not BonnishBase.HasPermission(ply) then
+        local err = BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_no_perm") or "You do not have permission to toggle No Target."
+        Notify(ply, err, 1)
         return false
     end
 
     local ent = trace.Entity
     if IsValid(ent) and ent:IsPlayer() then
-        ToggleNoTarget(ent)
+        ToggleNoTarget(ent, ply)
         return true 
     end
 end
@@ -53,12 +69,13 @@ function TOOL:RightClick(trace)
 
     local ply = self:GetOwner()
     local config = GetConfig()
-    if not config.allow_self and not ply:IsSuperAdmin() then
-        ply:ChatPrint("No tienes permiso para ponerte No Target.")
+    if not config.allow_self and not BonnishBase.HasPermission(ply) then
+        local err = BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_no_perm") or "You do not have permission to toggle No Target."
+        Notify(ply, err, 1)
         return false
     end
 
-    ToggleNoTarget(ply)
+    ToggleNoTarget(ply, ply)
     return true 
 end
 

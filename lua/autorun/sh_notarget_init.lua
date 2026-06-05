@@ -1,3 +1,6 @@
+AddCSLuaFile("sh_notarget_lang.lua")
+include("sh_notarget_lang.lua")
+
 if BonnishBase and BonnishBase.RegisterAddon then
     BonnishBase.RegisterAddon({
         id = "no_target",
@@ -5,10 +8,10 @@ if BonnishBase and BonnishBase.RegisterAddon then
         version = "1.0",
         workshop = "https://github.com/Bonnish/NoTarget-System",
         settings = {
-            { type = "job_list", id = "allowed_jobs", name = "Jobs con No Target (Solo DarkRP)", requireGamemode = "darkrp" },
-            { type = "boolean", id = "allow_self", name = "Permitir ponerse No Target a sí mismo", default = true },
-            { type = "boolean", id = "allow_others", name = "Permitir dar No Target a otros", default = false },
-            { type = "string", id = "command", name = "Comando de chat", default = "!notarget" }
+            { type = "boolean", id = "allow_self", name = "Allow Self No Target", desc = "Allows players with permissions to use NoTarget on themselves.", default = true },
+            { type = "boolean", id = "allow_others", name = "Allow Target Others", desc = "Allows players with permissions to set NoTarget on other players.", default = false },
+            { type = "string", id = "command", name = "Chat Command", desc = "The chat command used to toggle NoTarget (e.g. !notarget).", default = "!notarget" },
+            { type = "job_list", id = "allowed_jobs", name = "Allowed Jobs (DarkRP)", desc = "DarkRP Jobs that will have NoTarget enabled by default when they spawn.", requireGamemode = "darkrp" }
         }
     })
 end

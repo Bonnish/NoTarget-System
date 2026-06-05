@@ -10,6 +10,14 @@ local function GetConfig()
     return cfg
 end
 
+local function Notify(ply, msg, msgType)
+    if DarkRP and DarkRP.notify then
+        DarkRP.notify(ply, msgType or 0, 4, msg)
+    else
+        ply:ChatPrint("[No Target] " .. msg)
+    end
+end
+
 local function ToggleNoTarget(ent)
     if not IsValid(ent) or not ent:IsPlayer() then return end
 
@@ -18,8 +26,14 @@ local function ToggleNoTarget(ent)
     ent:SetNoTarget(nuevoEstado)
     ent:SetNWBool("Bonnish_NoTarget", nuevoEstado)
 
-    local modo = nuevoEstado and "ACTIVADO" or "DESACTIVADO"
-    ent:ChatPrint("No Target is now: " .. modo .. " for: " .. ent:Nick())
+    local msg
+    if nuevoEstado then
+        msg = (BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_enabled") or "No Target is now: ENABLED for: ") .. ent:Nick()
+        Notify(ent, msg, 0) -- 0 = green/generic
+    else
+        msg = (BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_disabled") or "No Target is now: DISABLED for: ") .. ent:Nick()
+        Notify(ent, msg, 1) -- 1 = error/red
+    end
 end
 
 hook.Add("PlayerSay", "Bonnish_NoTarget_Command", function(ply, text)
@@ -27,10 +41,11 @@ hook.Add("PlayerSay", "Bonnish_NoTarget_Command", function(ply, text)
     local cmd = config.command or "!notarget"
 
     if string.lower(text) == string.lower(cmd) then
-        if config.allow_self or ply:IsSuperAdmin() then
+        if config.allow_self or BonnishBase.HasPermission(ply) then
             ToggleNoTarget(ply)
         else
-            ply:ChatPrint("No tienes permiso para ponerte No Target.")
+            local err = BonnishBase and BonnishBase.GetLang and BonnishBase.GetLang("notarget_no_perm") or "You do not have permission to toggle No Target."
+            Notify(ply, err, 1)
         end
         return ""
     end
