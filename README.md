@@ -7,7 +7,7 @@ This addon is fully integrated with the **Bonnish Utilities Core**, allowing you
 ## ✨ Key Features
 
 - 👻 **NPC Invisibility:** Toggle NoTarget mode to become completely invisible to hostile and friendly NPCs.
-- ⚙️ **In-Game Configuration:** Configure permissions, chat commands, and features directly via the `!bonnish` dashboard.
+- ⚙️ **In-Game Configuration:** Configure permissions, chat commands, and features directly via the Context Menu (Hold C) dashboard.
 - 💬 **Customizable Chat Command:** Choose your preferred chat command (defaults to `!notarget`).
 - 🔫 **Admin Toolgun Tool:** Includes a custom STool to shoot other players and instantly toggle their NoTarget status (if allowed by settings).
 - 👔 **DarkRP Job Auto-Toggle:** Easily select which DarkRP jobs should automatically spawn with NoTarget enabled (e.g., Admins on Duty).
@@ -24,7 +24,7 @@ This addon is fully integrated with the **Bonnish Utilities Core**, allowing you
 
 ## 🛠️ Configuration
 
-You do not need to edit any Lua files to configure this addon. Simply join your server, open the dashboard by typing `!bonnish` in chat, and navigate to the **No Target System** module.
+You do not need to edit any Lua files to configure this addon. Simply join your server, open the Context Menu (hold `C`), click on the Bonnish icon, and navigate to the **No Target System** module.
 
 Available in-game settings:
 - **Allow Self No Target:** Allow players with permissions to use the command on themselves.
