@@ -4,9 +4,15 @@ TOOL.Name     = "NPC No Target"
 if CLIENT then
     language.Add("tool.notarget_tools.name", "No Target")
     language.Add("tool.notarget_tools.desc", "Toggle NoTarget on players")
+    language.Add("tool.notarget_tools.0", "Primary: Toggle on targeted player | Secondary: Toggle on yourself")
     language.Add("tool.notarget_tools.left", "Toggle NoTarget on targeted player")
     language.Add("tool.notarget_tools.right", "Toggle NoTarget on yourself")
 end
+
+TOOL.Information = {
+    { name = "left" },
+    { name = "right" }
+}
 
 local function Notify(ply, msg, msgType)
     if DarkRP and DarkRP.notify then
@@ -79,35 +85,65 @@ function TOOL:RightClick(trace)
     return true 
 end
 
+if CLIENT then
+    surface.CreateFont("BonnishFont_SToolTitle", { font = "Outfit", size = 26, weight = 600, antialias = true })
+    surface.CreateFont("BonnishFont_SToolSub", { font = "Outfit", size = 16, weight = 500, antialias = true })
+    surface.CreateFont("BonnishFont_SToolText", { font = "Outfit", size = 15, weight = 400, antialias = true })
+end
+
 function TOOL.BuildCPanel(panel)
-    panel:AddControl("Header", { Description = "Bonnish's NoTarget System" })
+    panel:ClearControls()
 
-    panel:AddControl("Label", { Text = "___________________________________________" })
-    panel:ControlHelp("\n")
-
-    local help = panel:Help("How to use:")
-    help:SetFont("DermaDefaultBold")
-
-    panel:ControlHelp("• LEFT CLICK: Toggle NoTarget on the player you're looking at.")
-    panel:ControlHelp("• RIGHT CLICK: Toggle NoTarget on yourself.")
-    
-    panel:ControlHelp("\n")
-    panel:AddControl("Label", { Text = "___________________________________________" })
-    panel:ControlHelp("\n")
-
-    local creditsTitle = panel:Help("Developed by Bonnish")
-    creditsTitle:SetContentAlignment(5)
-    
-    local version = panel:ControlHelp("Version 1.0")
-    version:SetContentAlignment(5)
-
-    panel:ControlHelp("\n")
-    local btn = panel:Button("Visit Workshop Page", "")
-    btn:SetImage("icon16/world.png")
-    
-    btn.DoClick = function()
-        gui.OpenURL("asd")
+    local header = vgui.Create("DPanel")
+    header:SetTall(70)
+    header.Paint = function(self, w, h)
+        draw.RoundedBox(6, 0, 0, w, h, Color(147, 51, 234))
+        draw.SimpleText("NoTarget System", "BonnishFont_SToolTitle", w/2, h/2 - 12, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Bonnish Utilities", "BonnishFont_SToolSub", w/2, h/2 + 12, Color(255, 255, 255, 200), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
+    panel:AddItem(header)
+
+    local helpPanel = vgui.Create("DPanel")
+    helpPanel:SetTall(110)
+    helpPanel.Paint = function(self, w, h)
+        draw.RoundedBox(6, 0, 0, w, h, Color(30, 41, 59))
+        draw.RoundedBoxEx(6, 0, 0, w, 28, Color(15, 23, 42), true, true, false, false)
+        
+        draw.SimpleText("INSTRUCTIONS", "BonnishFont_SToolSub", w/2, 14, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        
+        draw.SimpleText("Left Click:", "BonnishFont_SToolSub", 15, 45, Color(168, 85, 247), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Toggle on the player you look at.", "BonnishFont_SToolText", 15, 60, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+
+        draw.SimpleText("Right Click:", "BonnishFont_SToolSub", 15, 80, Color(168, 85, 247), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Toggle NoTarget on yourself.", "BonnishFont_SToolText", 15, 95, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    end
+    panel:AddItem(helpPanel)
+
+    local noteLabel = vgui.Create("DLabel")
+    noteLabel:SetText("Note: You can configure permissions\nand settings via the Context Menu.")
+    noteLabel:SetFont("BonnishFont_SToolText")
+    noteLabel:SetTextColor(Color(100, 116, 139))
+    noteLabel:SetWrap(true)
+    noteLabel:SetAutoStretchVertical(true)
+    noteLabel:SetContentAlignment(5)
+    panel:AddItem(noteLabel)
+
+    local btn = vgui.Create("DButton")
+    btn:SetText("Visit Workshop Page")
+    btn:SetFont("BonnishFont_SToolSub")
+    btn:SetTall(35)
+    btn.Paint = function(self, w, h)
+        if self:IsHovered() then
+            draw.RoundedBox(4, 0, 0, w, h, Color(168, 85, 247))
+        else
+            draw.RoundedBox(4, 0, 0, w, h, Color(147, 51, 234))
+        end
+    end
+    btn:SetTextColor(color_white)
+    btn.DoClick = function()
+        gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=3740098135")
+    end
+    panel:AddItem(btn)
 end
 
 if CLIENT then
