@@ -5,7 +5,7 @@ if BonnishBase and BonnishBase.RegisterAddon then
     BonnishBase.RegisterAddon({
         id = "no_target",
         name = "No Target System",
-        version = "1.0",
+        version = "1.2",
         workshop = "https://github.com/Bonnish/NoTarget-System",
         settings = {
             { type = "boolean", id = "allow_self", name = "Allow Self No Target", desc = "Allows players with permissions to use NoTarget on themselves.", default = true },
