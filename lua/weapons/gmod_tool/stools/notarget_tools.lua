@@ -17,9 +17,8 @@ TOOL.Information = {
 local function Notify(ply, msg, msgType)
     if DarkRP and DarkRP.notify then
         DarkRP.notify(ply, msgType or 0, 4, msg)
-    else
-        ply:ChatPrint("[No Target] " .. msg)
     end
+    ply:ChatPrint("[No Target] " .. msg)
 end
 
 local function ToggleNoTarget(ent, activator)

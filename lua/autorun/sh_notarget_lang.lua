@@ -15,8 +15,8 @@ BonnishBase.AddLanguage("en", {
     ["The chat command used to toggle NoTarget (e.g. !notarget)."] = "The chat command used to toggle NoTarget (e.g. !notarget).",
     ["Allowed Jobs (DarkRP)"] = "Allowed Jobs (DarkRP)",
     ["DarkRP Jobs that will have NoTarget enabled by default when they spawn."] = "DarkRP Jobs that will have NoTarget enabled by default when they spawn.",
-    ["notarget_enabled"] = "No Target is now: ENABLED for: ",
-    ["notarget_disabled"] = "No Target is now: DISABLED for: ",
+    ["notarget_enabled"] = "No Target is now ENABLED for: ",
+    ["notarget_disabled"] = "No Target is now DISABLED for: ",
     ["notarget_no_perm"] = "You do not have permission to toggle No Target."
 })
 
